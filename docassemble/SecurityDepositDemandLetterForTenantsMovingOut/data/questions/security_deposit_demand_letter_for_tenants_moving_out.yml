@@ -1,0 +1,262 @@
+include:
+  - docassemble.MAVirtualCourt:basic-questions.yml
+---
+question: |
+  Introduction to Markdown
+subquestion: |
+  Markdown allows you to express
+  formatting in plain text.
+  
+  # I am a heading
+
+  Write in *italic text* or even
+  **bold text**.
+
+  ## I am a subheading
+
+  ### I am a smaller subheading
+
+  To block quote,
+
+  > you can do this.
+
+  Insert an image:
+
+  ![Markdown logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/208px-Markdown-mark.svg.png)
+
+  Here is a bullet list:
+
+  * Larry;
+  * Curly; and
+  * Moe
+
+  Here is a numbered list:
+
+  1. Buy groceries.
+  2. Get the car inspected.
+  3. Take over the world!
+  
+  You can [Google](http://google.com)
+  "markdown" to learn more.
+mandatory: True
+---
+comment: |
+  The metadata section controls the tab title and saved interview title. You can delete this section if you include this YAML file in another YAML file.
+metadata:
+  title: |
+    Security Deposit Demand Letter for Tenants Moving Out
+  short title: |
+    Security Deposit Demand Letter
+---
+comment: |
+  This section is used by MAVirtualCourts to control how some of the questions work.
+mandatory: True
+code: |
+  interview_metadata # make sure we initialize the object
+  if not defined("interview_metadata['security_deposit_demand_letter_for_tenants_moving_out_1']"):
+    interview_metadata.initializeObject('security_deposit_demand_letter_for_tenants_moving_out_1')
+  interview_metadata['security_deposit_demand_letter_for_tenants_moving_out_1'].update({
+    'title': 'Security Deposit Demand Letter for Tenants Moving Out',
+    'short title': 'Security Deposit Demand Letter',
+    'description': 'Fill out this form to demand a security deposit from a landlord who failed to return the security deposit.',
+    'original_form': 'https://www.masslegalhelp.org/housing/lt1-form-6-security-deposit-demand-tenants.pdf',
+    'allowed courts': [
+      'Boston Municipal Court',
+      'District Court',
+      'Housing Court',
+      'Superior Court',
+    ],
+    'categories': [
+      'Housing',
+    ],
+    'logic block variable': 'security_deposit_demand_letter_for_tenants_moving_out_1',
+    'attachment block variable': 'security_deposit_demand_letter_for_tenants_moving_out_1_attachment',
+    'typical role': 'plaintiff',
+  })
+---
+features:
+  navigation: True
+---
+sections:
+  - review_security_deposit_demand_letter_for_tenants_moving_out_1: Review your answers
+---
+id: interview_order_security_deposit_demand_letter_for_tenants_moving_out_1
+code: |
+  # This is a placeholder to control logic flow in this interview
+
+  basic_questions_intro_screen 
+  security_deposit_demand_letter_for_tenants_moving_out_1_intro
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["security_deposit_demand_letter_for_tenants_moving_out_1"]["allowed courts"]
+  nav.set_section('review_security_deposit_demand_letter_for_tenants_moving_out_1')
+  user_role = 'plaintiff'
+  Letter_Information
+  Rental_Information
+  Deposit_Information
+  set_progress(12.5)
+  user_signature_verification_es_:signature
+  # Set the answer file name.
+  set_parts(subtitle=str(users))
+  str(users[0])
+  set_progress(25.0)
+  users[0].address.block()
+  str(other_parties[0])
+  other_parties[0].address.block()
+  set_progress(37.5)
+  # Save (anonymized) interview statistics.
+  store_variables_snapshot(data={'zip': users[0].address.zip})
+  security_deposit_demand_letter_for_tenants_moving_out_1_preview_question # Pre-canned preview screen
+  basic_questions_signature_flow
+  security_deposit_demand_letter_for_tenants_moving_out_1 = True
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: Security Deposit Demand Letter for Tenants Moving Out
+continue button field: security_deposit_demand_letter_for_tenants_moving_out_1_intro
+question: |
+  Security Deposit Demand Letter for Tenants Moving Out
+subquestion: |
+  Fill out this form to demand a security deposit from a landlord who failed to return the security deposit.
+---
+id: Review your form before you sign it
+continue button field: security_deposit_demand_letter_for_tenants_moving_out_1_preview_question
+question: |
+  Review your form before you sign it
+subquestion: |
+  Here is a preview of the form you'll sign on the next page. 
+  
+   ${ pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_1_attachment['preview'], filename='security_deposit_demand_letter_for_tenants_moving_out_1.pdf')}
+---
+id: Letter Information
+continue button field: Letter_Information
+question: |
+  Letter Information
+subquestion: |
+  Please fill out these fields regarding information about the demand letter.
+fields:
+  - 'Certified Mail Number': certified_mail_number
+    maxlength: 14
+  - 'Date Sent': sent_date
+    datatype: date
+---
+id: Rental Information
+continue button field: Rental_Information
+question: |
+  Rental Information
+subquestion: |
+  Please fill out these fields regarding information regarding the rental address.
+fields:
+  - 'Rental Address': rent_address_one_line
+    maxlength: 40
+  - 'Move out Date': move_out_date
+    datatype: date
+---
+id: Deposit Information
+continue button field: Deposit_Information
+question: |
+  Deposit Information
+subquestion: |
+  Please fill out these fields regarding information about the security deposit.
+fields:
+  - 'Deposit Date': deposit_date
+    datatype: date
+  - 'Deposit Amount': deposit_amount
+    maxlength: 14
+---
+id: Signature
+question: |
+  Signature
+subquestion: |
+  Please sign here.
+fields:
+  - 'Signature': user_signature_verification_es_signature
+    maxlength: 280
+---
+progress: 100
+mandatory: True
+id: Your form is ready to download and file
+question: |
+  Your form is ready to download and file
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  Below is a preview of your form.
+  
+  ${pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_1_attachment['final'], filename='security_deposit_demand_letter_for_tenants_moving_out_1.pdf') }
+need: security_deposit_demand_letter_for_tenants_moving_out_1
+attachment code: security_deposit_demand_letter_for_tenants_moving_out_1_attachment['final']
+---
+objects:
+  - security_deposit_demand_letter_for_tenants_moving_out_1_attachment: DADict
+---
+attachment:
+    variable name: security_deposit_demand_letter_for_tenants_moving_out_1_attachment[i]
+    name: Security Deposit Demand Letter
+    filename: Security_Deposit_Demand_Letter
+    skip undefined: True
+    pdf template file: security_deposit_demand_letter_for_tenants_moving_out_1.pdf
+    fields: 
+      - "user_name": ${ str(users[0]) }
+      - "user_address_block": ${ users[0].address.block() }
+      - "other_party_name": ${ str(other_parties[0]) }
+      - "other_party_address_block": ${ other_parties[0].address.block() }
+      - "other_party_name__2": ${ str(other_parties[0]) }
+      - "certified_mail_number": ${ certified_mail_number }
+      - "sent_date": ${ sent_date }
+      - "rent_address_one_line": ${ rent_address_one_line }
+      - "move_out_date": ${ move_out_date }
+      - "deposit_date": ${ deposit_date }
+      - "deposit_amount": ${ deposit_amount }
+      - "user_signature_verification_es_signature": ${ user_signature_verification_es_signature }
+---
+id: security_deposit_demand_letter_for_tenants_moving_out_1 review screen
+event: review_security_deposit_demand_letter_for_tenants_moving_out_1
+question: |
+  Placeholder Review Screen
+subquestion: |
+  Edit your answers below
+review: 
+  - Edit: certified_mail_number
+    button: |
+      Certified Mail Number:
+      ${ certified_mail_number }
+  - Edit: sent_date
+    button: |
+      Date Sent:
+      ${ sent_date.format() }
+  - Edit: rent_address_one_line
+    button: |
+      Rental Address:
+      ${ rent_address_one_line }
+  - Edit: move_out_date
+    button: |
+      Move out Date:
+      ${ move_out_date.format() }
+  - Edit: deposit_date
+    button: |
+      Deposit Date:
+      ${ deposit_date.format() }
+  - Edit: deposit_amount
+    button: |
+      Deposit Amount:
+      ${ deposit_amount }
+  - Edit: user_signature_verification_es_signature
+    button: |
+      Signature:
+      ${ user_signature_verification_es_signature }
+  - Edit: users[0]
+    button: |
+      users[0]:
+      ${ users[0] }
+  - Edit: users[0].address.address
+    button: |
+      users[0].address.address:
+      ${ users[0].address.address }
+  - Edit: other_parties[0]
+    button: |
+      other_parties[0]:
+      ${ other_parties[0] }
+  - Edit: other_parties[0].address.address
+    button: |
+      other_parties[0].address.address:
+      ${ other_parties[0].address.address }
