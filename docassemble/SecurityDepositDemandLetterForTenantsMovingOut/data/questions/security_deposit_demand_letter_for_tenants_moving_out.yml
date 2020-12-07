@@ -17,7 +17,7 @@ code: |
   if not defined("interview_metadata['security_deposit_demand_letter_for_tenants_moving_out']"):
     interview_metadata.initializeObject('security_deposit_demand_letter_for_tenants_moving_out')
   interview_metadata['security_deposit_demand_letter_for_tenants_moving_out'].update({
-    'title': 'Security Deposit Demand Letter for Tenants Moving Out',
+    'title': 'Security Deposit security_deposit_demand_letter_for_tenants_moving_out.pdf Letter for Tenants Moving Out',
     'short title': 'Security Deposit Demand Letter',
     'description': 'Demand letter for tenants moving out when a landlord failed to return a security deposit.',
     'original_form': 'https://www.masslegalhelp.org/housing/lt1-form-6-security-deposit-demand-tenants.pdf',
@@ -66,11 +66,11 @@ continue button field: security_deposit_demand_letter_for_tenants_moving_out_int
 question: |
   Security Deposit Demand Letter for Tenants Moving Out
 subquestion: |
-  Answer the questions in this form to draft a demand letter to send to a landlord who has failed to return your security deposit within 30 days after your lease ended. 
+  Answer the questions in this form to draft a demand letter to send to your landlord if they have not to returned your security deposit within 30 days after your lease ended. 
   
-   If you lived with other roommates and you each wrote separate checks for the security deposit, then you should each send your own Demand Letter. 
+   If you lived with other people and you each paid your portion of the security deposit seperately, you should each send your own Demand Letter. 
    
-   You may send this letter to your landlord via certified mail. More instructions for what to do once this letter has been sent can be found at the end of the form.
+   You may choose send this letter to your landlord via certified mail, but it is not required. Further instructions for the next steps after this letter has been sent can be found at the end of the form.
 ---
 id: Review your form before you sign it
 continue button field: security_deposit_demand_letter_for_tenants_moving_out_preview_question
@@ -81,25 +81,25 @@ subquestion: |
   
    ${ pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_attachment['preview'], filename='security_deposit_demand_letter_for_tenants_moving_out.pdf')}
 ---
-id: Letter Information
+id: Letter information
 continue button field: Letter_Information
 question: |
-  Letter Information
+  Letter information
 subquestion: |
-  If you will not be sending this letter by certified mail, you may leave that section blank. You may choose to send this letter with regular mail or email.
+  If you will not be sending this letter by certified mail, you may leave that section blank. You may choose to send this letter with regular mail or email instead.
 fields:
   - 'Certified Mail Number': certified_mail_number
     maxlength: 14
     required: false
-  - 'When are you completing this form?': sent_date
+  - 'When are you sending this letter?': sent_date
     datatype: date
 ---
-id: Rental Information
+id: Rental information
 continue button field: Rental_Information
 question: |
-  Rental Information
+  Rental information
 subquestion: |
-  Please fill out the following fields about your previous residence.
+   Fill out the following fields about your previous residence.
 fields:
   - 'Where did you live?': rent_address_one_line
     maxlength: 100
@@ -107,14 +107,14 @@ fields:
   - 'When did you move out?': move_out_date
     datatype: date
 ---
-id: Deposit Information
+id: Deposit information
 continue button field: Deposit_Information
 question: |
-  Deposit Information
+  Deposit information
 subquestion: |
-  Please provide the month and year of when you gave your landlord your security deposit and how much the security deposit cost.
+   Fill out the following fields about the security deposit.
 fields:
-  - 'Please provide the month and year of when you gave your landlord a security deposit.': deposit_date
+  - 'What month and year did you pay your security deposit?': deposit_date
     datatype: set_parts(mm/yyyy)
   - 'What was the amount that you paid towards your security deposit?': deposit_amount
     maxlength: 14
@@ -123,7 +123,7 @@ id: Signature
 question: |
   Signature
 subquestion: |
-  Please sign the demand letter here.
+  Sign the demand letter here.
 fields:
   - 'Signature': user_signature_verification_es_signature
     maxlength: 280
@@ -221,7 +221,7 @@ id: any other users
 question: |
    Did you make your own, independent payment for your security deposit?
 subquestion: |
-  If you lived with others and you each wrote separate checks for the security deposit, then you should each send your own Demand Letter.
+  If you lived with others and you each paid your portion of the security deposit separately, you should each send your own demand letter.
   
   Did you make your own, independent payment for your security deposit?
 noyes: users.there_is_another 
@@ -297,5 +297,4 @@ subquestion: |
   ${pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_attachment['final'], filename='security_deposit_demand_letter_for_tenants_moving_out.pdf') }
 need: security_deposit_demand_letter_for_tenants_moving_out
 attachment code: security_deposit_demand_letter_for_tenants_moving_out_attachment['final']
-
 ---
