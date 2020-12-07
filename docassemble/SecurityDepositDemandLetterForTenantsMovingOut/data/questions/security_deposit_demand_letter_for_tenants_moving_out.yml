@@ -14,43 +14,32 @@ comment: |
 mandatory: True
 code: |
   interview_metadata # make sure we initialize the object
-  if not defined("interview_metadata['security_deposit_demand_letter_for_tenants_moving_out_1']"):
-    interview_metadata.initializeObject('security_deposit_demand_letter_for_tenants_moving_out_1')
-  interview_metadata['security_deposit_demand_letter_for_tenants_moving_out_1'].update({
+  if not defined("interview_metadata['security_deposit_demand_letter_for_tenants_moving_out']"):
+    interview_metadata.initializeObject('security_deposit_demand_letter_for_tenants_moving_out')
+  interview_metadata['security_deposit_demand_letter_for_tenants_moving_out'].update({
     'title': 'Security Deposit Demand Letter for Tenants Moving Out',
     'short title': 'Security Deposit Demand Letter',
-    'description': 'Fill out this form to demand a security deposit from a landlord who failed to return the security deposit.',
+    'description': 'Demand letter for tenants moving out when a landlord failed to return a security deposit.',
     'original_form': 'https://www.masslegalhelp.org/housing/lt1-form-6-security-deposit-demand-tenants.pdf',
-    'allowed courts': [
-      'Boston Municipal Court',
-      'District Court',
-      'Housing Court',
-      'Superior Court',
-    ],
-    'categories': [
-      'Housing',
-    ],
-    'logic block variable': 'security_deposit_demand_letter_for_tenants_moving_out_1',
-    'attachment block variable': 'security_deposit_demand_letter_for_tenants_moving_out_1_attachment',
-    'typical role': 'plaintiff',
+    'logic block variable': 'security_deposit_demand_letter_for_tenants_moving_out',
+    'attachment block variable': 'security_deposit_demand_letter_for_tenants_moving_out_attachment',
+    'typical role': 'tenant',
   })
 ---
 features:
   navigation: True
 ---
 sections:
-  - review_security_deposit_demand_letter_for_tenants_moving_out_1: Review your answers
+  - review_security_deposit_demand_letter_for_tenants_moving_out: Review your answers
 ---
-id: interview_order_security_deposit_demand_letter_for_tenants_moving_out_1
+id: interview_order_security_deposit_demand_letter_for_tenants_moving_out
 code: |
   # This is a placeholder to control logic flow in this interview
 
   basic_questions_intro_screen 
-  security_deposit_demand_letter_for_tenants_moving_out_1_intro
-  # Set the allowed courts for this interview
-  allowed_courts = interview_metadata["security_deposit_demand_letter_for_tenants_moving_out_1"]["allowed courts"]
-  nav.set_section('review_security_deposit_demand_letter_for_tenants_moving_out_1')
-  user_role = 'plaintiff'
+  security_deposit_demand_letter_for_tenants_moving_out_intro
+  nav.set_section('review_security_deposit_demand_letter_for_tenants_moving_out')
+  user_role = 'tenant'
   Letter_Information
   Rental_Information
   Deposit_Information
@@ -66,38 +55,43 @@ code: |
   set_progress(37.5)
   # Save (anonymized) interview statistics.
   store_variables_snapshot(data={'zip': users[0].address.zip})
-  security_deposit_demand_letter_for_tenants_moving_out_1_preview_question # Pre-canned preview screen
+  security_deposit_demand_letter_for_tenants_moving_out_preview_question # Pre-canned preview screen
   basic_questions_signature_flow
-  security_deposit_demand_letter_for_tenants_moving_out_1 = True
+  security_deposit_demand_letter_for_tenants_moving_out = True
 ---
 comment: |
   This question is used to introduce your interview. Please customize
 id: Security Deposit Demand Letter for Tenants Moving Out
-continue button field: security_deposit_demand_letter_for_tenants_moving_out_1_intro
+continue button field: security_deposit_demand_letter_for_tenants_moving_out_intro
 question: |
   Security Deposit Demand Letter for Tenants Moving Out
 subquestion: |
-  Fill out this form to demand a security deposit from a landlord who failed to return the security deposit.
+  Answer the questions in this form to draft a demand letter to send to a landlord who has failed to return your security deposit within 30 days after your lease ended. 
+  
+   If you lived with other roommates and you each wrote separate checks for the security deposit, then you should each send your own Demand Letter. 
+   
+   You may send this letter to your landlord via certified mail. More instructions for what to do once this letter has been sent can be found at the end of the form.
 ---
 id: Review your form before you sign it
-continue button field: security_deposit_demand_letter_for_tenants_moving_out_1_preview_question
+continue button field: security_deposit_demand_letter_for_tenants_moving_out_preview_question
 question: |
   Review your form before you sign it
 subquestion: |
   Here is a preview of the form you'll sign on the next page. 
   
-   ${ pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_1_attachment['preview'], filename='security_deposit_demand_letter_for_tenants_moving_out_1.pdf')}
+   ${ pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_attachment['preview'], filename='security_deposit_demand_letter_for_tenants_moving_out.pdf')}
 ---
 id: Letter Information
 continue button field: Letter_Information
 question: |
   Letter Information
 subquestion: |
-  Please fill out these fields regarding information about the demand letter.
+  If you will not be sending this letter by certified mail, you may leave that section blank. You may choose to send this letter with regular mail or email.
 fields:
   - 'Certified Mail Number': certified_mail_number
     maxlength: 14
-  - 'Date Sent': sent_date
+    required: false
+  - 'When are you completing this form?': sent_date
     datatype: date
 ---
 id: Rental Information
@@ -105,11 +99,12 @@ continue button field: Rental_Information
 question: |
   Rental Information
 subquestion: |
-  Please fill out these fields regarding information regarding the rental address.
+  Please fill out the following fields about your previous residence.
 fields:
-  - 'Rental Address': rent_address_one_line
-    maxlength: 40
-  - 'Move out Date': move_out_date
+  - 'Where did you live?': rent_address_one_line
+    maxlength: 100
+    address autocomplete: true
+  - 'When did you move out?': move_out_date
     datatype: date
 ---
 id: Deposit Information
@@ -117,18 +112,18 @@ continue button field: Deposit_Information
 question: |
   Deposit Information
 subquestion: |
-  Please fill out these fields regarding information about the security deposit.
+  Please provide the month and year of when you gave your landlord your security deposit and how much the security deposit cost.
 fields:
-  - 'Deposit Date': deposit_date
-    datatype: date
-  - 'Deposit Amount': deposit_amount
+  - 'Please provide the month and year of when you gave your landlord a security deposit.': deposit_date
+    datatype: set_parts(mm/yyyy)
+  - 'What was the amount that you paid towards your security deposit?': deposit_amount
     maxlength: 14
 ---
 id: Signature
 question: |
   Signature
 subquestion: |
-  Please sign here.
+  Please sign the demand letter here.
 fields:
   - 'Signature': user_signature_verification_es_signature
     maxlength: 280
@@ -137,25 +132,25 @@ progress: 100
 mandatory: True
 id: Your form is ready to download and file
 question: |
-  Your form is ready to download and file
+  Your form is ready to download
 subquestion: |
   Thank you ${users}. Your form is ready to download and deliver.
   
   Below is a preview of your form.
   
-  ${pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_1_attachment['final'], filename='security_deposit_demand_letter_for_tenants_moving_out_1.pdf') }
-need: security_deposit_demand_letter_for_tenants_moving_out_1
-attachment code: security_deposit_demand_letter_for_tenants_moving_out_1_attachment['final']
+  ${pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_attachment['final'], filename='security_deposit_demand_letter_for_tenants_moving_out.pdf') }
+need: security_deposit_demand_letter_for_tenants_moving_out
+attachment code: security_deposit_demand_letter_for_tenants_moving_out_attachment['final']
 ---
 objects:
-  - security_deposit_demand_letter_for_tenants_moving_out_1_attachment: DADict
+  - security_deposit_demand_letter_for_tenants_moving_out_attachment: DADict
 ---
 attachment:
-    variable name: security_deposit_demand_letter_for_tenants_moving_out_1_attachment[i]
+    variable name: security_deposit_demand_letter_for_tenants_moving_out_attachment[i]
     name: Security Deposit Demand Letter
     filename: Security_Deposit_Demand_Letter
     skip undefined: True
-    pdf template file: security_deposit_demand_letter_for_tenants_moving_out_1.pdf
+    pdf template file: security_deposit_demand_letter_for_tenants_moving_out.pdf
     fields: 
       - "user_name": ${ str(users[0]) }
       - "user_address_block": ${ users[0].address.block() }
@@ -170,8 +165,8 @@ attachment:
       - "deposit_amount": ${ deposit_amount }
       - "user_signature_verification_es_signature": ${ user_signature_verification_es_signature }
 ---
-id: security_deposit_demand_letter_for_tenants_moving_out_1 review screen
-event: review_security_deposit_demand_letter_for_tenants_moving_out_1
+id: security_deposit_demand_letter_for_tenants_moving_out review screen
+event: review_security_deposit_demand_letter_for_tenants_moving_out
 question: |
   Placeholder Review Screen
 subquestion: |
@@ -183,23 +178,23 @@ review:
       ${ certified_mail_number }
   - Edit: sent_date
     button: |
-      Date Sent:
+      When are you filling out this form:
       ${ sent_date.format() }
   - Edit: rent_address_one_line
     button: |
-      Rental Address:
+      What is the address of the property you previously rented:
       ${ rent_address_one_line }
   - Edit: move_out_date
     button: |
-      Move out Date:
+      When did you move out of the property you previously rented:
       ${ move_out_date.format() }
   - Edit: deposit_date
     button: |
-      Deposit Date:
+      When did you pay your security deposit:
       ${ deposit_date.format() }
   - Edit: deposit_amount
     button: |
-      Deposit Amount:
+      How much money was your security deposit:
       ${ deposit_amount }
   - Edit: user_signature_verification_es_signature
     button: |
@@ -221,3 +216,86 @@ review:
     button: |
       other_parties[0].address.address:
       ${ other_parties[0].address.address }
+---
+id: any other users
+question: |
+   Did you make your own, independent payment for your security deposit?
+subquestion: |
+  If you lived with others and you each wrote separate checks for the security deposit, then you should each send your own Demand Letter.
+  
+  Did you make your own, independent payment for your security deposit?
+noyes: users.there_is_another 
+---
+id: made payment with others
+question: |
+  What is the name of the ${ ordinal(i) } person who also contributed to the security deposit payment?
+fields:
+  - First Name: users[i].name.first
+  - Middle Name: users[i].name.middle
+    required: False
+  - Last Name: users[i].name.last
+    required: False
+  - Suffix: users[i].name.suffixdocassemble
+    code: name_suffix()
+    required: False
+continue button field: second_person_entered
+---
+id: third user names
+question: Did anyone else contribute to the security deposit payment?
+yesno: secret_message
+---
+id: names of opposing parties
+question: |
+  Please list the name of your previous landlord.
+fields:
+  - Are they a person, or a business?: other_parties[i].person_type
+    input type: radio
+    choices:
+      - Business or organization: business
+      - Person: individual
+  - First name: other_parties[i].name.first
+    show if:
+      variable: other_parties[i].person_type
+      is: "individual"
+  - Last name: other_parties[i].name.last
+    show if:
+      variable: other_parties[i].person_type      
+      is: "individual"
+  - Suffix: other_parties[i].name.suffix
+    code: |
+      name_suffix()
+    show if:
+      variable: other_parties[i].person_type      
+      is: "individual"
+    required: False      
+  - Name of organization or business: other_parties[i].name.first
+    show if:
+      variable: other_parties[i].person_type
+      is: business
+---
+id: Review your form before you sign it
+continue button field: security_deposit_demand_letter_for_tenants_moving_out_preview_question
+question: |
+  Review your form before you sign it.
+subquestion: |
+  Here is a preview of the form you'll sign on the next page. 
+  
+  For more information on legal help with security deposit demands, use this link to visit MassLegalHelp.org. [link to a website](https://www.masslegalhelp.org/housing/lt1-chapter-3-getting-security-deposit-back)
+  This website will provide information for the next steps after sending your landlord this Security Deposit Demand Letter.
+  
+   ${ pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_attachment['preview'], filename='security_deposit_demand_letter_for_tenants_moving_out.pdf')}
+---
+progress: 100
+mandatory: True
+id: Your form is ready to download and file
+question: |
+  Your form is ready to download
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  Below is a preview of your form.
+  ${pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_attachment['final'], filename='security_deposit_demand_letter_for_tenants_moving_out.pdf') }
+need: security_deposit_demand_letter_for_tenants_moving_out
+attachment code: security_deposit_demand_letter_for_tenants_moving_out_attachment['final']
+
+---
