@@ -9,6 +9,9 @@ metadata:
   short title: |
     Security Deposit Demand Letter
 ---
+code: |
+  interview_short_title = "Demand the return of your security deposit"
+---
 comment: |
   This section is used by MAVirtualCourts to control how some of the questions work.
 mandatory: True
