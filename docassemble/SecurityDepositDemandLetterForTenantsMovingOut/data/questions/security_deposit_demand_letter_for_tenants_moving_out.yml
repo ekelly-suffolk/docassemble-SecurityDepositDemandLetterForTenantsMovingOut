@@ -1,5 +1,6 @@
 include:
-  - docassemble.MAVirtualCourt:basic-questions.yml
+  - docassemble.AssemblyLine:al_package.yml
+  - docassemble.MassAccess:massaccess.yml
 ---
 comment: |
   The metadata section controls the tab title and saved interview title. You can delete this section if you include this YAML file in another YAML file.
@@ -39,7 +40,7 @@ id: interview_order_security_deposit_demand_letter_for_tenants_moving_out
 code: |
   # This is a placeholder to control logic flow in this interview
 
-  basic_questions_intro_screen 
+  al_intro_screen 
   security_deposit_demand_letter_for_tenants_moving_out_intro
   nav.set_section('review_security_deposit_demand_letter_for_tenants_moving_out')
   user_role = 'tenant'
@@ -47,7 +48,6 @@ code: |
   Rental_Information
   Deposit_Information
   set_progress(12.5)
-  user_signature_verification_es_:signature
   # Set the answer file name.
   set_parts(subtitle=str(users))
   str(users[0])
@@ -74,6 +74,14 @@ subquestion: |
    If you lived with other people and you each paid your portion of the security deposit seperately, you should each send your own Demand Letter. 
    
    You may choose send this letter to your landlord via certified mail, but it is not required. Further instructions for the next steps after this letter has been sent can be found at the end of the form.
+help:
+  label: |
+    More information
+  content: |
+    Learn more at [MassLegalHelp.org](https://www.masslegalhelp.org/housing/lt1-chapter-3-getting-security-deposit-back)
+    
+    This website will provide information for the next steps after sending your landlord this Security Deposit Demand Letter.
+    
 ---
 id: Review your form before you sign it
 continue button field: security_deposit_demand_letter_for_tenants_moving_out_preview_question
@@ -120,7 +128,7 @@ fields:
   - 'What month and year did you pay your security deposit?': deposit_date
     datatype: set_parts(mm/yyyy)
   - 'What was the amount that you paid towards your security deposit?': deposit_amount
-    maxlength: 14
+    datatype: currency
 ---
 id: Signature
 question: |
@@ -165,13 +173,13 @@ attachment:
       - "rent_address_one_line": ${ rent_address_one_line }
       - "move_out_date": ${ move_out_date }
       - "deposit_date": ${ deposit_date }
-      - "deposit_amount": ${ deposit_amount }
-      - "user_signature_verification_es_signature": ${ user_signature_verification_es_signature }
+      - "deposit_amount": ${ currency(deposit_amount) }
+      - "user_signature": ${ users[0].signature }
 ---
 id: security_deposit_demand_letter_for_tenants_moving_out review screen
 event: review_security_deposit_demand_letter_for_tenants_moving_out
 question: |
-  Placeholder Review Screen
+  Review your answers
 subquestion: |
   Edit your answers below
 review: 
@@ -249,7 +257,7 @@ yesno: secret_message
 ---
 id: names of opposing parties
 question: |
-  Please list the name of your previous landlord.
+  Please list the name of your previous landlord
 fields:
   - Are they a person, or a business?: other_parties[i].person_type
     input type: radio
@@ -279,13 +287,10 @@ fields:
 id: Review your form before you sign it
 continue button field: security_deposit_demand_letter_for_tenants_moving_out_preview_question
 question: |
-  Review your form before you sign it.
+  Review your form before you sign it
 subquestion: |
   Here is a preview of the form you'll sign on the next page. 
-  
-  For more information on legal help with security deposit demands, use this link to visit MassLegalHelp.org. [link to a website](https://www.masslegalhelp.org/housing/lt1-chapter-3-getting-security-deposit-back)
-  This website will provide information for the next steps after sending your landlord this Security Deposit Demand Letter.
-  
+    
    ${ pdf_concatenate(security_deposit_demand_letter_for_tenants_moving_out_attachment['preview'], filename='security_deposit_demand_letter_for_tenants_moving_out.pdf')}
 ---
 progress: 100
