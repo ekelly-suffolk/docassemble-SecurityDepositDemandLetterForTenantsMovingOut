@@ -43,7 +43,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.SecurityDepositDemandLetterForTenantsMovingOut',
-      version='0.0.2',
+      version='0.0.3',
       description=('A docassemble extension.'),
       long_description='# docassemble.SecurityDepositDemandLetterForTenantsMovingOut\r\n\r\nThis is a security deposit demand letter for tenants moving out in Massachusetts, U.S.A.\r\n\r\n## Author\r\n\r\nLiz Kelly, ekelly3@su.suffolk.edu\r\n\r\n',
       long_description_content_type='text/markdown',
