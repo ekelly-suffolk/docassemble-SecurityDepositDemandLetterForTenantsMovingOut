@@ -148,7 +148,7 @@ question: |
 fields:
   - note: |
       What month and year did you pay your security deposit?
-  - Month: moveout_month
+  - Month: deposit_month
     choices:
       - January: January
       - February: February
@@ -162,7 +162,7 @@ fields:
       - October: October
       - November: November
       - December: December
-  - Year: moveout_year
+  - Year: deposit_year
     minlength: 4
     maxlength: 4
   - 'What was the amount that you paid towards your security deposit?': deposit_amount
@@ -206,8 +206,8 @@ attachment:
       #- "certified_mail_number": ${ certified_mail_number }
       - "sent_date": ${ sent_date }
       - "rent_address_one_line": ${ rent_address_one_line }
-      - "move_out_date": ${ moveout_month + ' ' + str(moveout_year) }
-      - "deposit_date": ${ deposit_date }
+      - "move_out_date": ${ move_out_date }
+      - "deposit_date": ${ deposit_month + ' ' + str(deposit_year) }
       - "deposit_amount": ${ currency(deposit_amount) }
       - "user_signature": ${ users[0].signature }
 ---
@@ -218,10 +218,6 @@ question: |
 subquestion: |
   Edit your answers below
 review: 
-  - Edit: certified_mail_number
-    button: |
-      Certified Mail Number:
-      ${ certified_mail_number }
   - Edit: sent_date
     button: |
       When are you filling out this form:
@@ -234,10 +230,10 @@ review:
     button: |
       When did you move out of the property you previously rented:
       ${ move_out_date.format() }
-  - Edit: deposit_date
+  - Edit: deposit_month
     button: |
       When did you pay your security deposit:
-      ${ deposit_date.format() }
+      ${ deposit_month + ' ' + str(deposit_year) }
   - Edit: deposit_amount
     button: |
       How much money was your security deposit:
