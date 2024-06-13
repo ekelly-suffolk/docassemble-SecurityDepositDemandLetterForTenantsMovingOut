@@ -1,8 +1,3 @@
-# docassemble.SecurityDepositDemandLetterForTenantsMovingOut
+# Massachussetts Security Deposit Demand Letter
 
-This is a security deposit demand letter for tenants moving out in Massachusetts, U.S.A.
-
-## Author
-
-Liz Kelly, ekelly3@su.suffolk.edu
-
+This is a Docassemble interview to complete the Massachusetts Security Deposit Demand Letter for tenants moving out online. The live interview can be found at [https://www.courtformsonline.org/housing/#deposit](https://www.courtformsonline.org/housing/#deposit).

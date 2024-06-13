@@ -9,6 +9,40 @@ metadata:
     Security Deposit Demand Letter for Tenants Moving Out
   short title: |
     Security Deposit Demand Letter
+  description: |
+    This form will help you draft a demand letter to send to your landlord if they have not returned your security deposit within 30 days after your lease ended. If your landlord does not return your deposit, you may get up to 3 times your deposit back from your landlord as a penalty.
+  can_I_use_this_form: |
+    This interview is the right one to use if:
+    
+    * You recently vacated (moved out of) a residential rental property (an apartment)
+    * You vacated the apartment at least 30 days ago
+    * Your landlord has not returned your security deposit
+
+    If you lived with other people and you each paid your portion of the security deposit seperately, you should each send your own demand letter.
+  before_you_start: |
+    You will need information about your landlord and their address.
+  maturity: production
+  estimated_completion_minutes: 5
+  estimated_completion_delta: 5
+  languages:
+    - en
+  help_page_url: https://www.masslegalhelp.org/housing-apartments-shelter/security-deposits/getting-your-security-deposit-back
+  help_page_title: Getting Your Security Deposit Back
+  LIST_topics: # Preferred
+    - HO-06-01-00-00
+  tags: # Should be used if LIST_topics not populated
+    - HO-06-01-00-00
+  jurisdiction: NAM-US-US+MA
+  original_form: https://www.masslegalhelp.org/sites/default/files/documents/housing/lt1-form-6-security-deposit-demand-tenants.pdf
+  review_date: 2024-06-13
+  form_titles:
+    - Security Deposit Demand Letter  
+  form_numbers: # Not all forms have an assigned number
+    - 5
+  fees:
+    - Filing fee: 0.00
+  update_notes: |
+    Reviewed in 2024. Form is current.
 ---
 code: |
   interview_short_title = "Demand the return of your security deposit"
